@@ -1,0 +1,4 @@
+{
+    "recipesAPI": "http://localhost:3000/recipes",
+    "specialsAPI": "http://localhost:3000/specials"
+}

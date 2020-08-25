@@ -1,0 +1,69 @@
+<div class="container my-5" *ngIf="doneLoading else loading">
+    <div class="row">
+        <div class="col-lg col-xl col-sm-12 col-xs-12 order-lg-2 text-center">
+            <img class="shadow-lg p-3 mb-5 bg-white rounded w-100" src="../../assets/{{recipe.images.medium}}"
+                alt="image {{recipe.title}}">
+        </div>
+        <div class="col-lg col-xl col-sm-12 col-xs-12 order-lg-1 text-left">
+            <h1>{{ recipe.title }}</h1>
+            <h3 class="mt-4">{{ recipe.description }}</h3>
+            <h5 class="mt-2">Preparation: {{ recipe.prepTime }}min | Ready In: {{ recipe.cookTime }}min</h5>
+        </div>
+    </div>
+
+    <div class="container"
+        style="  margin-top: 1rem; margin-bottom: 1rem; border: 0; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+        <div class="row mt-5">
+            <h2>Ingedients</h2>
+        </div>
+        <div class="row">
+            <table class="table table-hover mt-3">
+                <thead>
+                    <tr class="d-flex">
+                        <th class="col-6" scope="col">Ingredient</th>
+                        <th class="col" scope="col">Amount</th>
+                        <th class="col" scope="col">Measurement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="d-flex" *ngFor="let ingredient of recipe.ingredients">
+                        <td class="col-6">
+                            {{ingredient.name}}
+                            <ng-container *ngIf="ingredientIdToSpecial.has(ingredient.uuid)">
+                                <p class="font-weight-light" style="font-size: .75em;">
+                                    <b class="font-weight-normal text-uppercase" style="color: rgb(37, 161, 37);">{{ingredientIdToSpecial.get(ingredient.uuid).type}}: </b>
+                                    {{ingredientIdToSpecial.get(ingredient.uuid).title}}, {{ingredientIdToSpecial.get(ingredient.uuid).text}}
+                                </p>
+                            </ng-container>
+                        </td>
+                        <td class="col">{{ ingredient.amount }}</td>
+                        <td class="col">{{ ingredient.measurement }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mt-5">
+            <h2>Directions</h2>
+        </div>
+        <div class="mt-3">
+            <ol>
+                <li *ngFor="let direction of recipe.directions">
+                    <p *ngIf="(direction.optional == false)">
+                        {{ direction.instructions }}
+                    </p>
+                    <p *ngIf="(direction.optional == true)" style="color: orange;">
+                        (Optional) {{ direction.instructions }}
+                    </p>
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <div class="mt-5 text-center">
+        <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-pulse"
+            [fullScreen]="false"></ngx-spinner>
+    </div>
+</ng-template>
